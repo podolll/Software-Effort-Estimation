@@ -11,6 +11,10 @@
 ├── requirements.txt
 ├── .gitignore
 │
+├── data/ # Набор данных
+│ ├── README.md
+│ ├── Sip-task_info.csv
+│
 ├── models/ # Сохранённые модели и артефакты после обучения
 │ ├── features.pkl
 │ ├── linear_regression.pkl
