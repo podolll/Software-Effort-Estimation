@@ -131,7 +131,7 @@ def train_and_evaluate_keras(X_train_scaled, y_train, X_test_scaled, y_test):
 
 def save_models(scaler, features, top_proj, top_sub, top_assignee,
                 linear_model, rf_model, keras_model,
-                path_prefix="DiplomSIP/models/"):
+                path_prefix="Software-Effort-Estimation/models/"):
     import os
     os.makedirs(path_prefix, exist_ok=True)
 
