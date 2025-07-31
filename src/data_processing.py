@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-def load_and_process_data(file_path='Sip/Sip-task-info.csv', encoding='cp1251', random_state=42):
+def load_and_process_data(file_path='Software-Effort-Estimation/data/Sip-task-info.csv', encoding='cp1251', random_state=42):
     # Загрузка и очистка
     df = pd.read_csv(file_path, encoding=encoding)
     df = df[(df['HoursActual'] == df['DeveloperHoursActual']) & (df['Category'] == 'Development')]
