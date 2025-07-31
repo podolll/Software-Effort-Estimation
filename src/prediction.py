@@ -1,24 +1,28 @@
+import os
 import numpy as np
 import pandas as pd
 import joblib
 from tensorflow.keras.models import load_model
 
-# Загрузка всех артефактов
-model = load_model("models/mlp_model.keras")
-scaler = joblib.load("models/scaler.pkl")
-features = joblib.load("models/features.pkl")
-top_proj = joblib.load("models/top_proj.pkl")
-top_sub = joblib.load("models/top_sub.pkl")
-top_assignee = joblib.load("models/top_assignee.pkl")
+# Пути к моделям и артефактам (относительно этого файла)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.abspath(os.path.join(BASE_DIR, "../models"))
+
+model = load_model(os.path.join(MODEL_DIR, "mlp_model.keras"))
+scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
+features = joblib.load(os.path.join(MODEL_DIR, "features.pkl"))
+top_proj = joblib.load(os.path.join(MODEL_DIR, "top_proj.pkl"))
+top_sub = joblib.load(os.path.join(MODEL_DIR, "top_sub.pkl"))
+top_assignee = joblib.load(os.path.join(MODEL_DIR, "top_assignee.pkl"))
 
 def predict_from_input(input_dict):
-    # Шаг 1: Преобразуем вход в DataFrame
+    # Преобразуем вход в DataFrame
     df_input = pd.DataFrame([input_dict])
 
-    # Шаг 2: Логарифмируем оценку
-    df_input["LogHoursEstimate"] = np.log1p(df_input["HoursEstimate"])
+    # Логарифмируем оценку - используем np.log, как в обучении (не log1p)
+    df_input["LogHoursEstimate"] = np.log(df_input["HoursEstimate"])
 
-    # Шаг 3: Обработка редких категорий
+    # Обработка редких категорий
     df_input["ProjGroup"] = df_input["ProjectCode"].apply(
         lambda x: x if x in top_proj else "Other_ProjectCode")
     df_input["SubGroup"] = df_input["SubCategory"].apply(
@@ -26,21 +30,16 @@ def predict_from_input(input_dict):
     df_input["AssigneeGroup"] = df_input["AssignedToID"].apply(
         lambda x: str(x) if x in top_assignee else "Other_AssigneeGroup")
 
-    # Шаг 4: One-hot кодирование
+    # One-hot кодирование
     df_encoded = pd.get_dummies(df_input, columns=["ProjGroup", "SubGroup", "AssigneeGroup"])
     for f in features:
         if f not in df_encoded.columns:
             df_encoded[f] = 0
     df_encoded = df_encoded[features]
 
-    # Шаг 5: Стандартизация числовых признаков
+    # Стандартизация числовых признаков
     num_features = ["LogHoursEstimate", "Priority"]
     cat_features = [f for f in features if f not in num_features]
 
     X_num_scaled = scaler.transform(df_encoded[num_features])
-    X_input = np.hstack([X_num_scaled, df_encoded[cat_features].values])
-
-    # Шаг 6: Прогноз и обратное преобразование
-    y_pred_log = model.predict(X_input).flatten()[0]
-    y_pred_real = np.expm1(y_pred_log)
-    return y_pred_real
+    X_input = np.hstack(_
