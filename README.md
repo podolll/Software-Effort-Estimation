@@ -12,6 +12,14 @@
 ├── .gitignore
 │
 ├── models/ # Сохранённые модели и артефакты после обучения
+│ ├── features.pkl
+│ ├── linear_regression.pkl
+│ ├── mlp_model.keras
+│ ├── random_forest.pkl
+│ ├── scaler.pkl
+│ ├── top_assignee.pkl
+│ ├── top_proj.pkl
+│ ├── top_sub.pkl
 │
 ├── src/
 │ ├── data_processing.py # Загрузка и подготовка данных
