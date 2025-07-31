@@ -42,4 +42,10 @@ def predict_from_input(input_dict):
     cat_features = [f for f in features if f not in num_features]
 
     X_num_scaled = scaler.transform(df_encoded[num_features])
-    X_input = np.hstack(_
+    X_input = np.hstack([X_num_scaled, df_encoded[cat_features].values])
+
+    # Прогноз и обратное преобразование
+    y_pred_log = model.predict(X_input).flatten()[0]
+    y_pred_real = np.exp(y_pred_log)  # обратное к np.log
+
+    return y_pred_real
