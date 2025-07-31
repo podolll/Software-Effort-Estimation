@@ -34,7 +34,18 @@
 │
 ├── figures/ # Графики
 │ ├── eda/ # графики из части исследовательского анализа данных
+│   ├── README.md
+│   ├── combined_assignedtoid.png
+│   ├── combined_projectcode.png
+│   ├── combined_subcategory.png
+│   ├── correlation_matrix.png
+│   ├── distribution_HoursActual.png
+│   ├── distribution_HoursEstimate.png
 │ ├── results/ # графики полученных результатов
+│   ├── README.md
+│   ├── scatter_Linear_Regression.png
+│   ├── scatter_Neural_Network.png
+│   ├── scatter_Random_Forest.png
 
 
 ```
