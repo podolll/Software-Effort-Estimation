@@ -41,6 +41,7 @@
 │   ├── correlation_matrix.png
 │   ├── distribution_HoursActual.png
 │   ├── distribution_HoursEstimate.png
+│
 │ ├── results/ # графики полученных результатов
 │   ├── README.md
 │   ├── scatter_Linear_Regression.png
